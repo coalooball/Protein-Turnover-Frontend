@@ -8,11 +8,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@quasar/extras": "^1.16.8",
+    "quasar": "^2.13.1",
     "vue": "^3.3.4",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
+    "@quasar/vite-plugin": "^1.6.0",
     "@vitejs/plugin-vue": "^4.4.0",
+    "sass": "^1.32.12",
     "vite": "^4.4.11"
   }
 }
