@@ -20,11 +20,11 @@
       </q-tabs>
     </q-header>
 
-    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
+    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'">
       <!-- drawer content -->
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container class="bg-grey-6">
       <router-view />
     </q-page-container>
 
