@@ -24,7 +24,7 @@
       <!-- drawer content -->
     </q-drawer>
 
-    <q-page-container class="bg-grey-6">
+    <q-page-container class="bg-grey-6" style="width: 100vw; height: 100vh;">
       <router-view />
     </q-page-container>
 
