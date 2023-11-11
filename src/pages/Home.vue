@@ -1,7 +1,13 @@
 <template>
-    <div>
-        <p>{{ message }}</p>
-    </div>
+    <q-expansion-item dense dense-toggle expand-separator label="Host Information">
+        <q-card class="bg-grey-5">
+            <q-card-section>
+                <div>
+                    <p>{{ message }}</p>
+                </div>
+            </q-card-section>
+        </q-card>
+    </q-expansion-item>
 </template>
   
 <script setup>
