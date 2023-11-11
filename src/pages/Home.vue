@@ -1,5 +1,5 @@
 <template>
-    <q-expansion-item dense dense-toggle expand-separator label="Host Information">
+    <q-expansion-item v-model="expanded" dense dense-toggle expand-separator label="Host Information">
         <q-card class="bg-grey-5">
             <q-card-section>
                 <div class="row" v-for="(info_value, info_key) in message" :key="info_key">
@@ -20,6 +20,7 @@
 import { ref } from 'vue';
 
 const message = ref([]);
+const expanded = ref(true);
 
 const fetchData = async () => {
     try {
