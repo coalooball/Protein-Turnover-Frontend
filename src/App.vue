@@ -20,7 +20,8 @@
       </q-tabs>
     </q-header>
 
-    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered :class="$q.dark.isActive ? 'bg-grey-10' : 'bg-grey-10'">
+    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered
+      :class="$q.dark.isActive ? 'bg-grey-10' : 'bg-grey-10'">
       <!-- drawer content -->
     </q-drawer>
 
@@ -47,7 +48,7 @@ export default {
   setup() {
     const leftDrawerOpen = ref(false)
     const route = useRoute()
-    const title = ref('Home') 
+    const title = ref('Home')
 
     watch(() => route.path, (newPath) => {
       if (newPath === '/protein_turnover') {
