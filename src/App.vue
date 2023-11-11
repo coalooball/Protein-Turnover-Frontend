@@ -15,7 +15,7 @@
 
       <q-tabs align="left">
         <q-route-tab to="/protein_turnover" label="Home" />
-        <q-route-tab to="/protein_turnover/about" label="About" />
+        <q-route-tab to="/protein_turnover/manage_job" label="Manage Job" />
         <!-- <q-route-tab to="/page3" label="Page Three" /> -->
       </q-tabs>
     </q-header>
@@ -53,8 +53,8 @@ export default {
     watch(() => route.path, (newPath) => {
       if (newPath === '/protein_turnover') {
         title.value = 'Home'
-      } else if (newPath === '/protein_turnover/about') {
-        title.value = 'About'
+      } else if (newPath === '/protein_turnover/manage_job') {
+        title.value = 'View the status of all jobs.'
       } else {
         title.value = ''
       }
