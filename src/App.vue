@@ -31,7 +31,7 @@
     <q-footer elevated class="bg-dark text-white">
       <q-toolbar>
         <q-toolbar-title>
-          <div>Title</div>
+          <div>{{ title }}</div>
         </q-toolbar-title>
       </q-toolbar>
     </q-footer>
@@ -40,14 +40,28 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router' // 导入 useRoute 钩子
 
 export default {
   setup() {
     const leftDrawerOpen = ref(false)
+    const route = useRoute()
+    const title = ref('Home') 
+
+    watch(() => route.path, (newPath) => {
+      if (newPath === '/protein_turnover') {
+        title.value = 'Home'
+      } else if (newPath === '/protein_turnover/about') {
+        title.value = 'About'
+      } else {
+        title.value = ''
+      }
+    })
 
     return {
       leftDrawerOpen,
+      title,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value
       }
