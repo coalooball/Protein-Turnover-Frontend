@@ -16,6 +16,11 @@
       <q-tabs align="left">
         <q-route-tab to="/protein_turnover" label="Home" />
         <q-route-tab to="/protein_turnover/manage_job" label="Manage Job" />
+        <q-route-tab to="/protein_turnover/create_job" label="Create Job" />
+        <q-route-tab to="/protein_turnover/inspect_envelope_fit" label="Inspect Envelope Fit" />
+        <q-route-tab to="/protein_turnover/compare_envelope_fit" label="Compare Envelope Fit" />
+        <q-route-tab to="/protein_turnover/batch_export" label="Batch Export" />
+        <q-route-tab to="/protein_turnover/preview" label="Preview" />
         <!-- <q-route-tab to="/page3" label="Page Three" /> -->
       </q-tabs>
     </q-header>
@@ -52,9 +57,19 @@ export default {
 
     watch(() => route.path, (newPath) => {
       if (newPath === '/protein_turnover') {
-        title.value = 'Home'
+        title.value = 'View the basic status and operating environment of the host.'
       } else if (newPath === '/protein_turnover/manage_job') {
         title.value = 'View the status of all jobs.'
+      } else if (newPath === '/protein_turnover/create_job') {
+        title.value = 'Create jobs.'
+      } else if (newPath === '/protein_turnover/inspect_envelope_fit') {
+        title.value = 'Inspect Envelope Fit.'
+      } else if (newPath === '/protein_turnover/compare_envelope_fit') {
+        title.value = 'Compare Envelope Fit.'
+      } else if (newPath === '/protein_turnover/batch_export') {
+        title.value = 'Batch Export.'
+      } else if (newPath === '/protein_turnover/preview') {
+        title.value = 'Preview.'
       } else {
         title.value = ''
       }
