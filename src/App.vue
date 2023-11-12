@@ -14,13 +14,13 @@
       </q-toolbar>
 
       <q-tabs align="left">
-        <q-route-tab to="/protein_turnover" label="Home" no-caps/>
-        <q-route-tab to="/protein_turnover/preparation" label="Preparation" no-caps/>
-        <q-route-tab to="/protein_turnover/manage_job" label="Manage Job" no-caps/>
-        <q-route-tab to="/protein_turnover/create_job" label="Create Job" no-caps/>
-        <q-route-tab to="/protein_turnover/inspect_envelope_fit" label="Inspect Envelope Fit" no-caps/>
-        <q-route-tab to="/protein_turnover/compare_envelope_fit" label="Compare Envelope Fit" no-caps/>
-        <q-route-tab to="/protein_turnover/batch_export" label="Batch Export" no-caps/>
+        <q-route-tab to="/protein_turnover" label="Home" no-caps />
+        <q-route-tab to="/protein_turnover/preparation" label="Preparation" no-caps />
+        <q-route-tab to="/protein_turnover/manage_job" label="Manage Job" no-caps />
+        <q-route-tab to="/protein_turnover/create_job" label="Create Job" no-caps />
+        <q-route-tab to="/protein_turnover/inspect_envelope_fit" label="Inspect Envelope Fit" no-caps />
+        <q-route-tab to="/protein_turnover/compare_envelope_fit" label="Compare Envelope Fit" no-caps />
+        <q-route-tab to="/protein_turnover/batch_export" label="Batch Export" no-caps />
         <!-- <q-route-tab to="/page3" label="Page Three" /> -->
       </q-tabs>
     </q-header>
@@ -45,43 +45,35 @@
   </q-layout>
 </template>
 
-<script>
+<script setup>
 import { ref, watch } from 'vue'
-import { useRoute } from 'vue-router' // 导入 useRoute 钩子
+import { useRoute } from 'vue-router'
 
-export default {
-  setup() {
-    const leftDrawerOpen = ref(false)
-    const route = useRoute()
-    const title = ref('Home')
+const leftDrawerOpen = ref(false)
+const route = useRoute()
+const title = ref('Home')
 
-    watch(() => route.path, (newPath) => {
-      if (newPath === '/protein_turnover') {
-        title.value = 'View the basic status and operating environment of the host.'
-      } else if (newPath === '/protein_turnover/manage_job') {
-        title.value = 'View the status of all jobs.'
-      } else if (newPath === '/protein_turnover/create_job') {
-        title.value = 'Create jobs.'
-      } else if (newPath === '/protein_turnover/inspect_envelope_fit') {
-        title.value = 'Inspect Envelope Fit.'
-      } else if (newPath === '/protein_turnover/compare_envelope_fit') {
-        title.value = 'Compare Envelope Fit.'
-      } else if (newPath === '/protein_turnover/batch_export') {
-        title.value = 'Batch Export.'
-      } else if (newPath === '/protein_turnover/preview') {
-        title.value = 'Preview.'
-      } else {
-        title.value = ''
-      }
-    })
-
-    return {
-      leftDrawerOpen,
-      title,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
-    }
+watch(() => route.path, (newPath) => {
+  if (newPath === '/protein_turnover') {
+    title.value = 'View the basic status and operating environment of the host.'
+  } else if (newPath === '/protein_turnover/manage_job') {
+    title.value = 'View the status of all jobs.'
+  } else if (newPath === '/protein_turnover/create_job') {
+    title.value = 'Create jobs.'
+  } else if (newPath === '/protein_turnover/inspect_envelope_fit') {
+    title.value = 'Inspect Envelope Fit.'
+  } else if (newPath === '/protein_turnover/compare_envelope_fit') {
+    title.value = 'Compare Envelope Fit.'
+  } else if (newPath === '/protein_turnover/batch_export') {
+    title.value = 'Batch Export.'
+  } else if (newPath === '/protein_turnover/preview') {
+    title.value = 'Preview.'
+  } else {
+    title.value = ''
   }
-}
+});
+
+function toggleLeftDrawer() {
+  leftDrawerOpen.value = !leftDrawerOpen.value;
+};
 </script>
