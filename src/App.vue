@@ -3,7 +3,15 @@
 
     <q-header elevated class="bg-dark text-white" height-hint="98">
       <q-toolbar>
-        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
+
+        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer">
+          <q-tooltip v-if="leftDrawerOpen">
+            Click to hide the sidebar
+          </q-tooltip>
+          <q-tooltip v-else anchor="center right" self="center left">
+            Click to show the sidebar
+          </q-tooltip>
+        </q-btn>
 
         <q-toolbar-title>
           <q-avatar>
