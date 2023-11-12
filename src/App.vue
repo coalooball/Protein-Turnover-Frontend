@@ -15,12 +15,12 @@
 
       <q-tabs align="left">
         <q-route-tab to="/protein_turnover" label="Home" no-caps/>
+        <q-route-tab to="/protein_turnover/preparation" label="Preparation" no-caps/>
         <q-route-tab to="/protein_turnover/manage_job" label="Manage Job" no-caps/>
         <q-route-tab to="/protein_turnover/create_job" label="Create Job" no-caps/>
         <q-route-tab to="/protein_turnover/inspect_envelope_fit" label="Inspect Envelope Fit" no-caps/>
         <q-route-tab to="/protein_turnover/compare_envelope_fit" label="Compare Envelope Fit" no-caps/>
         <q-route-tab to="/protein_turnover/batch_export" label="Batch Export" no-caps/>
-        <q-route-tab to="/protein_turnover/preview" label="Preview" no-caps/>
         <!-- <q-route-tab to="/page3" label="Page Three" /> -->
       </q-tabs>
     </q-header>

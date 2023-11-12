@@ -1,5 +1,5 @@
 <template>
     <div>
-        P
+        Preparation
     </div>
 </template>
