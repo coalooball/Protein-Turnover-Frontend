@@ -8,34 +8,36 @@
                             :dense="dense" />
                     </div>
                 </div>
-                <div class="row q-gutter-xs">
-                    <div class="col-3">
-                        <q-card flat bordered>
-                            <q-expansion-item v-model="peptide_list_expanded" dense dense-toggle expand-separator
-                                label="Peptide List">
-                                <q-card-section>
-                                    <q-input v-model="peptide_list_path" label="Peptide dir"
-                                        placeholder="Input the Directory of the pep.xml file" :dense="dense" />
-                                    <q-select v-model="peptide_list_select" :options="peptide_list_options"
-                                        label="Choose one pep.xml file" />
-                                </q-card-section>
-                            </q-expansion-item>
-                        </q-card>
+                <q-card-section>
+                    <div class="row q-gutter-xs">
+                        <div class="col-3">
+                            <q-card flat bordered>
+                                <q-expansion-item v-model="peptide_list_expanded" dense dense-toggle expand-separator
+                                    label="Peptide List">
+                                    <q-card-section>
+                                        <q-input v-model="peptide_list_path" label="Peptide dir"
+                                            placeholder="Input the Directory of the pep.xml file" :dense="dense" />
+                                        <q-select v-model="peptide_list_select" :options="peptide_list_options"
+                                            label="Choose one pep.xml file" />
+                                    </q-card-section>
+                                </q-expansion-item>
+                            </q-card>
+                        </div>
+                        <div class="col-3">
+                            <q-card flat bordered>
+                                <q-expansion-item v-model="spectrum_files_expanded" dense dense-toggle expand-separator
+                                    label="Spectrum Files">
+                                    <q-card-section>
+                                        <q-input v-model="specturm_files_path" label="Spectrum dir"
+                                            placeholder="Input the Directory of .mzML files" :dense="dense" />
+                                        <q-select v-model="specturm_files_select" :options="specturm_files_options"
+                                            label="Choose one .mzML files" />
+                                    </q-card-section>
+                                </q-expansion-item>
+                            </q-card>
+                        </div>
                     </div>
-                    <div class="col-3">
-                        <q-card flat bordered>
-                            <q-expansion-item v-model="spectrum_files_expanded" dense dense-toggle expand-separator
-                                label="Spectrum Files">
-                                <q-card-section>
-                                    <q-input v-model="specturm_files_path" label="Spectrum dir"
-                                        placeholder="Input the Directory of .mzML files" :dense="dense" />
-                                    <q-select v-model="specturm_files_select" :options="specturm_files_options"
-                                        label="Choose one .mzML files" />
-                                </q-card-section>
-                            </q-expansion-item>
-                        </q-card>
-                    </div>
-                </div>
+                </q-card-section>
                 <div class="row q-gutter-xs">
                     <div class="col-3">
                         <q-input v-model.number="num_retention_time_tol" type="number"
@@ -79,7 +81,7 @@
                 </div>
                 <div class="row q-gutter-xs">
                     <div class="col-6">
-                        <q-btn outline color="dark" label="start job" no-caps/>
+                        <q-btn outline color="dark" label="start job" no-caps />
                     </div>
                 </div>
             </q-card-section>
