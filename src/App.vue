@@ -25,9 +25,14 @@
       </q-tabs>
     </q-header>
 
-    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered
+    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered class="text-white"
       :class="$q.dark.isActive ? 'bg-grey-10' : 'bg-grey-10'">
-      <!-- drawer content -->
+      <div v-if="sidebarFlag === 0">
+        <home-sidebar />
+      </div>
+      <div v-else>
+        No content
+      </div>
     </q-drawer>
 
     <q-page-container class="bg-grey-6" style="width: 100vw; height: 100vh;">
@@ -46,28 +51,37 @@
 </template>
 
 <script setup>
+import HomeSidebar from './sidebar/HomeSidebar.vue';
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 const leftDrawerOpen = ref(false)
 const route = useRoute()
 const title = ref('Home')
+let sidebarFlag = ref(0);
 
 watch(() => route.path, (newPath) => {
   if (newPath === '/protein_turnover') {
     title.value = 'View the basic status and operating environment of the host.'
+    sidebarFlag.value = 0;
   } else if (newPath === '/protein_turnover/manage_job') {
     title.value = 'View the status of all jobs.'
+    sidebarFlag.value = 1;
   } else if (newPath === '/protein_turnover/create_job') {
     title.value = 'Create jobs.'
+    sidebarFlag.value = 2;
   } else if (newPath === '/protein_turnover/inspect_envelope_fit') {
     title.value = 'Inspect Envelope Fit.'
+    sidebarFlag.value = 3;
   } else if (newPath === '/protein_turnover/compare_envelope_fit') {
     title.value = 'Compare Envelope Fit.'
+    sidebarFlag.value = 4;
   } else if (newPath === '/protein_turnover/batch_export') {
     title.value = 'Batch Export.'
+    sidebarFlag.value = 5;
   } else if (newPath === '/protein_turnover/preview') {
     title.value = 'Preview.'
+    sidebarFlag.value = 6;
   } else {
     title.value = ''
   }
