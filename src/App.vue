@@ -64,6 +64,9 @@ watch(() => route.path, (newPath) => {
   if (newPath === '/protein_turnover') {
     title.value = 'View the basic status and operating environment of the host.'
     sidebarFlag.value = 0;
+  } else if (newPath === '/protein_turnover/preparation') {
+    title.value = 'Preparation.'
+    sidebarFlag.value = 6;
   } else if (newPath === '/protein_turnover/manage_job') {
     title.value = 'View the status of all jobs.'
     sidebarFlag.value = 1;
@@ -79,9 +82,6 @@ watch(() => route.path, (newPath) => {
   } else if (newPath === '/protein_turnover/batch_export') {
     title.value = 'Batch Export.'
     sidebarFlag.value = 5;
-  } else if (newPath === '/protein_turnover/preview') {
-    title.value = 'Preview.'
-    sidebarFlag.value = 6;
   } else {
     title.value = ''
   }
