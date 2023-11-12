@@ -30,6 +30,9 @@
       <div v-if="sidebarFlag === 0">
         <home-sidebar />
       </div>
+      <div v-else-if="sidebarFlag === 1">
+        <preparation-sidebar />
+      </div>
       <div v-else>
         No content
       </div>
@@ -52,6 +55,7 @@
 
 <script setup>
 import HomeSidebar from './sidebar/HomeSidebar.vue';
+import PreparationSidebar from './sidebar/PreparationSidebar.vue';
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -66,22 +70,22 @@ watch(() => route.path, (newPath) => {
     sidebarFlag.value = 0;
   } else if (newPath === '/protein_turnover/preparation') {
     title.value = 'Preparation.'
-    sidebarFlag.value = 6;
+    sidebarFlag.value = 1;
   } else if (newPath === '/protein_turnover/manage_job') {
     title.value = 'View the status of all jobs.'
-    sidebarFlag.value = 1;
+    sidebarFlag.value = 2;
   } else if (newPath === '/protein_turnover/create_job') {
     title.value = 'Create jobs.'
-    sidebarFlag.value = 2;
+    sidebarFlag.value = 3;
   } else if (newPath === '/protein_turnover/inspect_envelope_fit') {
     title.value = 'Inspect Envelope Fit.'
-    sidebarFlag.value = 3;
+    sidebarFlag.value = 4;
   } else if (newPath === '/protein_turnover/compare_envelope_fit') {
     title.value = 'Compare Envelope Fit.'
-    sidebarFlag.value = 4;
+    sidebarFlag.value = 5;
   } else if (newPath === '/protein_turnover/batch_export') {
     title.value = 'Batch Export.'
-    sidebarFlag.value = 5;
+    sidebarFlag.value = 6;
   } else {
     title.value = ''
   }

@@ -1,5 +1,5 @@
 <template>
     <div class="row justify-center">
-        HOME
+        Preparation Configuration
     </div>
 </template>
