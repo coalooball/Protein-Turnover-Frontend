@@ -28,7 +28,7 @@
 </template>
   
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useQuasar } from "quasar";
 
 const $q = useQuasar();
@@ -37,6 +37,31 @@ let port = ref("8123");
 let username = ref("");
 let password = ref("");
 let is_connected = ref(false);
+
+const getClickhouseInfo = () => {
+    fetch("/api/get_clickhouse_connection_info")
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.json();
+        })
+        .then((data) => {
+            console.log(data);
+            if (data !== null) {
+                host.value = data.host;
+                port.value = data.port;
+                username.value = data.username;
+                password.value = data.password;
+            }
+        })
+        .catch((error) => {
+            console.error(
+                "There was a problem with the fetch operation:",
+                error
+            );
+        });
+};
 
 const sendData = () => {
     const data = {
@@ -62,7 +87,6 @@ const sendData = () => {
         .then((data) => {
             console.log(data);
             is_connected.value = data;
-            console.log($q)
             if (data) {
                 showNotifSucess();
             } else {
@@ -92,5 +116,9 @@ function showNotifFailed() {
         position: "top",
     });
 }
+
+onMounted(() => {
+    getClickhouseInfo();
+});
 </script>
   
