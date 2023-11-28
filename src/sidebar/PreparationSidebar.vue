@@ -28,6 +28,7 @@
 </template>
   
 <script setup>
+import { EventBus } from '../event-bus.js';
 import { ref, onMounted } from "vue";
 import { useQuasar } from "quasar";
 
@@ -89,6 +90,7 @@ const sendData = () => {
             is_connected.value = data;
             if (data) {
                 showNotifSucess();
+                EventBus.$emit('clickhouse-connected', data);
             } else {
                 showNotifFailed();
             }

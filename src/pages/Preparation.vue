@@ -14,8 +14,8 @@
             <q-card-section>
                 <div class="row">
                     <div class="col-6">
-                        <q-input v-model="job_name" label="File Directory" placeholder="Please enter the dir"
-                            :dense="dense" />
+                        <q-input v-model="fileDir" label="File Directory" placeholder="Please enter the dir"
+                            :dense="true" />
                     </div>
                 </div>
             </q-card-section>
@@ -24,9 +24,25 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { EventBus } from '../event-bus.js';
+import { ref, onMounted, onUnmounted } from "vue";
 
 let boolCheckClickhouseConnection = ref(false)
+let fileDir = ref('');
+
+function handleCCEvent(data) {
+    boolCheckClickhouseConnection.value = data;
+    console.log(`Received data from EventBus: ${boolCheckClickhouseConnection.value}`);
+}
+
+onMounted(() => {
+    EventBus.$on('clickhouse-connected', handleCCEvent);
+    fnBoolCheckClickhouseConnection();
+});
+
+onUnmounted(() => {
+    EventBus.$off('clickhouse-connected', handleCCEvent);
+});
 
 function fnBoolCheckClickhouseConnection() {
     fetch("/api/bool_check_clickhouse_connection")
@@ -45,9 +61,4 @@ function fnBoolCheckClickhouseConnection() {
             );
         });
 }
-
-onMounted(() => {
-    fnBoolCheckClickhouseConnection();
-});
-
 </script>
