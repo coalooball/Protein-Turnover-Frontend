@@ -81,6 +81,7 @@ function showNotifSucess() {
     $q.notify({
         message: "Connected!",
         color: "positive",
+        position: "top",
     });
 }
 
@@ -88,6 +89,7 @@ function showNotifFailed() {
     $q.notify({
         message: "Failed to connect clickhouse!",
         color: "negative",
+        position: "top",
     });
 }
 </script>
