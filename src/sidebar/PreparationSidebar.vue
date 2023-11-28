@@ -2,10 +2,19 @@
     <div class="row justify-center">
         Preparation Configuration
         <q-card flat bordered class="bg-grey-10">
-            <q-input v-model="host" label="Host" :dense="true" label-color="white" color="teal" input-class="text-white" dark />
-            <q-input v-model="port" label="Port" :dense="true" label-color="white" color="teal" input-class="text-white" dark />
-            <q-input v-model="username" label="Username" :dense="true" label-color="white" color="teal" dark input-class="text-white" />
-            <q-input v-model="password" label="Password" :dense="true" label-color="white" color="teal" dark input-class="text-white" />
+            <q-input v-model="host" label="Host" :dense="true" label-color="white" color="teal" input-class="text-white"
+                dark />
+            <q-input v-model="port" label="Port" :dense="true" label-color="white" color="teal" input-class="text-white"
+                dark />
+            <q-input v-model="username" label="Username" :dense="true" label-color="white" color="teal" dark
+                input-class="text-white" />
+            <q-input v-model="password" label="Password" :dense="true" label-color="white" color="teal" dark
+                input-class="text-white" :type="isPwd ? 'password' : 'text'">
+                <template v-slot:append>
+                    <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer"
+                        @click="isPwd = !isPwd" />
+                </template>
+            </q-input>
             <q-space />
             <div v-if="!is_connected">
                 <q-btn color="primary" @click="sendData">
@@ -38,6 +47,7 @@ let port = ref("8123");
 let username = ref("");
 let password = ref("");
 let is_connected = ref(false);
+let isPwd = ref(true);
 
 const getClickhouseInfo = () => {
     fetch("/api/get_clickhouse_connection_info")
