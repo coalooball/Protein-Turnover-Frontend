@@ -64,6 +64,7 @@ const getClickhouseInfo = () => {
                 port.value = data.port;
                 username.value = data.username;
                 password.value = data.password;
+                is_connected.value = true;
             }
         })
         .catch((error) => {
