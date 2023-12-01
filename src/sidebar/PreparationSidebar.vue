@@ -1,18 +1,14 @@
 <template>
     <div class="row justify-center">
-        Preparation Configuration
+        <q-chip dense square label="Preparation Configuration" />
         <q-card flat bordered class="bg-grey-10">
-            <q-input v-model="host" label="Host" :dense="true" label-color="white" color="teal" input-class="text-white"
-                dark />
-            <q-input v-model="port" label="Port" :dense="true" label-color="white" color="teal" input-class="text-white"
-                dark />
-            <q-input v-model="username" label="Username" :dense="true" label-color="white" color="teal" dark
-                input-class="text-white" />
-            <q-input v-model="password" label="Password" :dense="true" label-color="white" color="teal" dark
-                input-class="text-white" :type="isPwd ? 'password' : 'text'">
+            <q-select label="Choose One" dark transition-show="jump-up" label-color="white" color="teal" transition-hide="jump-up" filled v-model="clickhouseOptionModel" :options="clickhouseOptions" style="width: 250px" />
+            <q-input v-model="host" label="Host" :dense="true" label-color="white" color="teal" input-class="text-white" dark />
+            <q-input v-model="port" label="Port" :dense="true" label-color="white" color="teal" input-class="text-white" dark />
+            <q-input v-model="username" label="Username" :dense="true" label-color="white" color="teal" dark input-class="text-white" />
+            <q-input v-model="password" label="Password" :dense="true" label-color="white" color="teal" dark input-class="text-white" :type="isPwd ? 'password' : 'text'">
                 <template v-slot:append>
-                    <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer"
-                        @click="isPwd = !isPwd" />
+                    <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd" />
                 </template>
             </q-input>
             <q-space />
@@ -37,8 +33,8 @@
 </template>
   
 <script setup>
-import { EventBus } from '../event-bus.js';
-import { ref, onMounted } from "vue";
+import { EventBus } from "../event-bus.js";
+import { ref, onMounted, watch } from "vue";
 import { useQuasar } from "quasar";
 
 const $q = useQuasar();
@@ -48,6 +44,8 @@ let username = ref("");
 let password = ref("");
 let is_connected = ref(false);
 let isPwd = ref(true);
+let clickhouseOptions = ref([]);
+let clickhouseOptionModel = ref("");
 
 const getClickhouseInfo = () => {
     fetch("/api/get_clickhouse_connection_info")
@@ -75,6 +73,44 @@ const getClickhouseInfo = () => {
         });
 };
 
+function getClickhouseInfoOptions() {
+    fetch("/api/get_all_names_of_clickhouse_information")
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                clickhouseOptions.value = data.data;
+            } else {
+                showNotify(data.msg, "negative");
+            }
+        });
+}
+
+function getClickhouseInfoByNmae(newName) {
+    fetch("/api/get_clickhouse_information_by_name", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            data: newName,
+        }),
+    })
+        .then((respone) => respone.json())
+        .then((data) => {
+            if (data.success) {
+                host.value = data.data[0];
+                port.value = data.data[1];
+                username.value = data.data[2];
+                password.value = data.data[2];
+            } else {
+                showNotify(data.msg, "negative");
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+}
+
 const sendData = () => {
     const data = {
         host: host.value,
@@ -101,7 +137,7 @@ const sendData = () => {
             is_connected.value = data;
             if (data) {
                 showNotifSucess();
-                EventBus.$emit('clickhouse-connected', data);
+                EventBus.$emit("clickhouse-connected", data);
             } else {
                 showNotifFailed();
             }
@@ -130,8 +166,21 @@ function showNotifFailed() {
     });
 }
 
+function showNotify(msg, color) {
+    $q.notify({
+        message: msg,
+        color: color,
+        position: "top",
+    });
+}
+
 onMounted(() => {
     getClickhouseInfo();
+    getClickhouseInfoOptions();
+});
+
+watch(clickhouseOptionModel, (newValue) => {
+    getClickhouseInfoByNmae(newValue);
 });
 </script>
   
