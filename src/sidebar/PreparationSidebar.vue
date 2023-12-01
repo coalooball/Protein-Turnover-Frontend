@@ -101,7 +101,7 @@ function getClickhouseInfoByNmae(newName) {
                 host.value = data.data[0];
                 port.value = data.data[1];
                 username.value = data.data[2];
-                password.value = data.data[2];
+                password.value = data.data[3];
             } else {
                 showNotify(data.msg, "negative");
             }
