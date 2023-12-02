@@ -79,6 +79,10 @@ function selectDir() {
     let data = {
         dir: fileDir.value
     }
+    boolGetDataFiles.value = false;
+    dataFilesGroup.value = [];
+    dataFilesOptions.value = [];
+    dataFiles.value = [];
     fetch("/api/find_all_mzML_pepxml_files_in_dir", {
         method: "POST",
         headers: {
