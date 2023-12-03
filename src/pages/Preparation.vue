@@ -1,60 +1,127 @@
 <template>
-    <q-card>
-        <div v-if="!boolCheckClickhouseConnection">
-            <q-card-section>
-                <div class="row">
-                    <div class="col-2">
-                        <q-spinner-audio color="primary" size="2em" />
-                        <q-tooltip :offset="[0, 8]">Clickhouse Connecting</q-tooltip>
-                    </div>
-                </div>
-            </q-card-section>
-        </div>
-        <div v-else>
-            <q-card-section>
-                <div class="row">
-                    <div class="col-6">
-                        <q-input v-model="fileDir" label="File Directory" placeholder="Please enter the dir"
-                            :dense="true" />
-                    </div>
-                    <div class="col-6">
-                        <q-btn outline color="dark" label="Select" no-caps @click="selectDir" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <div v-if="boolGetDataFiles">
-                            <q-expansion-item v-model="boolGetDataFilesExpansion" dense dense-toggle expand-separator
-                                label="Select File">
-                                <q-option-group :options="dataFilesOptions" type="checkbox" v-model="dataFilesGroup" />
-                            </q-expansion-item>
+    <q-tabs v-model="preparation_tab" dense align="justify" class="bg-blue-grey-10 text-white shadow-2" narrow-indicator>
+        <q-tab name="Load_file_data" label="Load File Data" no-caps />
+        <q-tab name="Preview" label="Preview" no-caps />
+    </q-tabs>
+    <q-separator />
+    <q-tab-panels v-model="preparation_tab" animated>
+        <q-tab-panel name="Load_file_data">
+            <q-card flat>
+                <div v-if="!boolCheckClickhouseConnection">
+                    <q-card-section>
+                        <div class="row">
+                            <div class="col-2">
+                                <q-spinner-audio color="primary" size="2em" />
+                                <q-tooltip :offset="[0, 8]">Clickhouse Connecting</q-tooltip>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-6">
-                        <q-list dense bordered separator>
-                            <q-item v-for="x in dataFilesGroup" :key="x" v-ripple>
-                                <q-item-section>{{ x }}</q-item-section>
-                            </q-item>
-                        </q-list>
-                        <div v-if="dataFilesGroup.length > 0">
-                            <q-btn :loading="boolLoadingDataFiles" outline color="dark" label="Load" no-caps
-                                @click="loadDataFilesInClickhouse">
-                                <q-tooltip anchor="bottom middle" self="top middle">
-                                    Import file data into ClickHouse.
-                                </q-tooltip>
-                            </q-btn>
-                        </div>
-                    </div>
+                    </q-card-section>
                 </div>
-            </q-card-section>
-        </div>
-    </q-card>
+                <div v-else>
+                    <q-card-section>
+                        <div class="row">
+                            <div class="col-6">
+                                <q-input v-model="fileDir" label="File Directory" placeholder="Please enter the dir"
+                                    :dense="true" />
+                            </div>
+                            <div class="col-6">
+                                <q-btn outline color="dark" label="Select" no-caps @click="selectDir" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div v-if="boolGetDataFiles">
+                                    <q-expansion-item v-model="boolGetDataFilesExpansion" dense dense-toggle
+                                        expand-separator label="Select File">
+                                        <q-option-group :options="dataFilesOptions" type="checkbox"
+                                            v-model="dataFilesGroup" />
+                                    </q-expansion-item>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <q-list dense bordered separator>
+                                    <q-item v-for="x in dataFilesGroup" :key="x" v-ripple>
+                                        <q-item-section>{{ x }}</q-item-section>
+                                    </q-item>
+                                </q-list>
+                                <div v-if="dataFilesGroup.length > 0">
+                                    <q-btn :loading="boolLoadingDataFiles" outline color="dark" label="Load" no-caps
+                                        @click="loadDataFilesInClickhouse">
+                                        <q-tooltip anchor="bottom middle" self="top middle">
+                                            Import file data into ClickHouse.
+                                        </q-tooltip>
+                                    </q-btn>
+                                </div>
+                            </div>
+                        </div>
+                    </q-card-section>
+                </div>
+            </q-card>
+        </q-tab-panel>
+
+        <q-tab-panel name="Preview">
+            <div class="row">
+                <div class="col-6">
+                    <q-card>
+                        <div v-if="!boolCheckClickhouseConnection">
+                            <q-card-section>
+                                <div class="row">
+                                    <div class="col-2">
+                                        <q-spinner-audio color="primary" size="2em" />
+                                        <q-tooltip :offset="[0, 8]">Clickhouse Connecting</q-tooltip>
+                                    </div>
+                                </div>
+                            </q-card-section>
+                        </div>
+                        <div v-else>
+                            <q-card-section>
+                                <div class="text-h6">pepxml Data</div>
+                                <q-separator />
+                                <q-list dense bordered separator>
+                                    <q-item v-for="x in pepxmlTableNames" :key="x" v-ripple clickable
+                                        @click="fnClickDataItem(x, 'pepxml')">
+                                        <q-item-section>{{ x }}</q-item-section>
+                                    </q-item>
+                                </q-list>
+                            </q-card-section>
+                        </div>
+                    </q-card>
+                </div>
+                <div class="col-6">
+                    <q-card>
+                        <div v-if="!boolCheckClickhouseConnection">
+                            <q-card-section>
+                                <div class="row">
+                                    <div class="col-2">
+                                        <q-spinner-audio color="primary" size="2em" />
+                                        <q-tooltip :offset="[0, 8]">Clickhouse Connecting</q-tooltip>
+                                    </div>
+                                </div>
+                            </q-card-section>
+                        </div>
+                        <div v-else>
+                            <q-card-section>
+                                <div class="text-h6">mzML Data</div>
+                                <q-separator />
+                                <q-list dense bordered separator>
+                                    <q-item v-for="x in mzMLTableNames" :key="x" v-ripple clickable
+                                        @click="fnClickDataItem(x, 'mzml')">
+                                        <q-item-section>{{ x }}</q-item-section>
+                                    </q-item>
+                                </q-list>
+                            </q-card-section>
+                        </div>
+                    </q-card>
+                </div>
+            </div>
+        </q-tab-panel>
+    </q-tab-panels>
 </template>
 
 <script setup>
 import { useQuasar } from "quasar";
 import { EventBus } from '../event-bus.js';
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, watch } from "vue";
 
 const $q = useQuasar();
 let boolCheckClickhouseConnection = ref(false)
@@ -66,6 +133,9 @@ let dataFilesOptions = ref(dataFiles.value.map((x) => ({ label: x, value: x })))
 let dataFilesGroup = ref([]);
 let boolLoadingDataFiles = ref(false);
 let osPathSep = ref('/')
+let preparation_tab = ref('Load_file_data')
+let pepxmlTableNames = ref([]);
+let mzMLTableNames = ref([]);
 
 // let boolOppositeGetDataFiles = ref(!boolGetDataFiles.value);
 
@@ -198,4 +268,28 @@ function fnBoolCheckClickhouseConnection() {
             );
         });
 }
+
+function fnGetAllPepxmlTableNames() {
+    fetch("/api/get_all_pepxml_table_names").then(response => response.json()).then(data => {
+        pepxmlTableNames.value = data;
+    }).catch(error => console.error("Error: ", error))
+}
+
+function fnGetAllmzMLTableNames() {
+    fetch("/api/get_all_mzml_table_names").then(response => response.json()).then(data => {
+        mzMLTableNames.value = data;
+    }).catch(error => console.error("Error: ", error))
+}
+
+watch(preparation_tab, (newVal) => {
+    if (newVal === 'Preview') {
+        fnGetAllPepxmlTableNames();
+        fnGetAllmzMLTableNames();
+    }
+})
+
+function fnClickDataItem(name, type) {
+    console.log(name, type)
+}
+
 </script>
