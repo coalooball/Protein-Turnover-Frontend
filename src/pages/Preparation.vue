@@ -116,12 +116,16 @@
             </div>
         </q-tab-panel>
     </q-tab-panels>
+    <pepxml-preview ref="PepxmlPreviewProperty" :pepxmlName="pepxmlName"/>
+    <mzml-preview ref="MzmlPreviewProperty" :mzmlName="mzmlName"/>
 </template>
 
 <script setup>
 import { useQuasar } from "quasar";
 import { EventBus } from '../event-bus.js';
 import { ref, onMounted, onUnmounted, watch } from "vue";
+import PepxmlPreview from './preview/pepxml.vue';
+import MzmlPreview from './preview/mzml.vue';
 
 const $q = useQuasar();
 let boolCheckClickhouseConnection = ref(false)
@@ -136,6 +140,10 @@ let osPathSep = ref('/')
 let preparation_tab = ref('Load_file_data')
 let pepxmlTableNames = ref([]);
 let mzMLTableNames = ref([]);
+const PepxmlPreviewProperty = ref(null);
+const MzmlPreviewProperty = ref(null);
+let mzmlName = ref("");
+let pepxmlName = ref("")
 
 // let boolOppositeGetDataFiles = ref(!boolGetDataFiles.value);
 
@@ -289,7 +297,14 @@ watch(preparation_tab, (newVal) => {
 })
 
 function fnClickDataItem(name, type) {
-    console.log(name, type)
+    console.log(name, type);
+    if (type === 'pepxml') {
+        pepxmlName.value = name;
+        PepxmlPreviewProperty.value.boolPepxmlModel = true;
+    } else if (type === 'mzml') {
+        mzmlName.value = name;
+        MzmlPreviewProperty.value.boolMzmlModel = true;
+    }
 }
 
 </script>
