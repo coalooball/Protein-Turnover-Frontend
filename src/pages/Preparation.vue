@@ -37,7 +37,8 @@
                             </q-item>
                         </q-list>
                         <div v-if="dataFilesGroup.length > 0">
-                            <q-btn outline color="dark" label="Load" no-caps @click="loadDataFilesInClickhouse">
+                            <q-btn :loading="boolLoadingDataFiles" outline color="dark" label="Load" no-caps
+                                @click="loadDataFilesInClickhouse">
                                 <q-tooltip anchor="bottom middle" self="top middle">
                                     Import file data into ClickHouse.
                                 </q-tooltip>
@@ -63,11 +64,53 @@ let boolGetDataFiles = ref(false)
 let boolGetDataFilesExpansion = ref(true)
 let dataFilesOptions = ref(dataFiles.value.map((x) => ({ label: x, value: x })));
 let dataFilesGroup = ref([]);
+let boolLoadingDataFiles = ref(false);
+let osPathSep = ref('/')
 
 // let boolOppositeGetDataFiles = ref(!boolGetDataFiles.value);
 
 function loadDataFilesInClickhouse() {
     console.log("Load...");
+    try {
+        const filePaths = dataFilesGroup.value.map(x => fileDir.value + osPathSep.value + x);
+        const queryString = filePaths.map(filePath => `filePath=${encodeURIComponent(filePath)}`).join('&')
+        const eventSource = new EventSource(`/api/load_files_sse?${queryString}`)
+        boolLoadingDataFiles.value = true;
+
+        eventSource.onmessage = (event) => {
+            // console.log(event.data)
+            const data = JSON.parse(event.data);
+            console.log(data)
+            if (data.status === "FIN") {
+                boolLoadingDataFiles.value = false;
+                eventSource.close();
+            } else if (data.status === "process") {
+                showNotify(data.message, 'info')
+            } else if (data.status === "error") {
+                showNotify(data.message, 'negative')
+            } else if (data.status === "success") {
+                showNotify(data.message, "positive")
+            }
+        };
+
+        eventSource.onerror = (error) => {
+            console.error("EventSource failed:", error);
+            boolLoadingDataFiles.value = false;
+            eventSource.close();
+        };
+
+        eventSource.onopen = (event) => {
+            console.log("Connection was opened");
+        };
+
+        eventSource.onclose = () => {
+            console.log("Connection was closed");
+            boolLoadingDataFiles.value = false;
+            eventSource.close();
+        };
+    } catch (error) {
+        console.error("Loading failed", error);
+    }
 }
 
 function selectDir() {
@@ -103,6 +146,7 @@ function selectDir() {
                 dataFiles.value = data.files;
                 dataFilesOptions.value = dataFiles.value.map((x) => ({ label: x, value: x }));
                 boolGetDataFiles.value = true;
+                osPathSep.value = data.sep;
             } else {
                 showNotify(data.msg, 'negative');
             }
