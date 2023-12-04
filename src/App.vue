@@ -63,10 +63,11 @@
 import HomeSidebar from "./sidebar/HomeSidebar.vue";
 import PreparationSidebar from "./sidebar/PreparationSidebar.vue";
 import { ref, watch } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const leftDrawerOpen = ref(false);
 const route = useRoute();
+const router = useRouter();
 const title = ref("Home");
 let sidebarFlag = ref(0);
 
@@ -101,4 +102,10 @@ watch(
 function toggleLeftDrawer() {
     leftDrawerOpen.value = !leftDrawerOpen.value;
 }
+
+onMounted(() => {
+    if (route.path === "/") {
+        router.push("/protein_turnover");
+    }
+});
 </script>
