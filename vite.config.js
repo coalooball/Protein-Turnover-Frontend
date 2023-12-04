@@ -1,6 +1,12 @@
 import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
+import envFile from 'ini';
+import fs from 'fs';
+
+const data = fs.readFileSync('./.env', 'utf-8');
+const config = envFile.parse(data);
+const targetUrl = config.proxy.target;
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -22,8 +28,8 @@ export default defineConfig({
     host: '0.0.0.0',
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:9880',
-        changeOrigin: true,
+        target: targetUrl,
+        changeOrigin: true
       },
     }
   }
