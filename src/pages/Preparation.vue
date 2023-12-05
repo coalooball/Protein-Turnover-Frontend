@@ -21,7 +21,19 @@
                     <q-card-section>
                         <div class="row">
                             <div class="col-6">
-                                <q-input v-model="fileDir" label="File Directory" placeholder="Please enter the dir" :dense="true" />
+                                <q-input v-model="fileDir" label="File Directory" placeholder="Please enter the dir"
+                                    :dense="true" @focus="fnShowHistory">
+                                    <q-menu v-model="showHistoryFileDir" fit :offset="[0, 20]">
+                                        <q-list>
+                                            <q-item v-for="(item, index) in historyFileDirs" :key="index" clickable
+                                                v-close-popup @click="selectHistoryItem(item)">
+                                                <q-item-section>
+                                                    {{ item }}
+                                                </q-item-section>
+                                            </q-item>
+                                        </q-list>
+                                    </q-menu>
+                                </q-input>
                             </div>
                             <div class="col-6">
                                 <q-btn outline color="dark" label="Select" no-caps @click="selectDir" />
@@ -30,8 +42,10 @@
                         <div class="row">
                             <div class="col-6">
                                 <div v-if="boolGetDataFiles">
-                                    <q-expansion-item v-model="boolGetDataFilesExpansion" dense dense-toggle expand-separator label="Select File">
-                                        <q-option-group :options="dataFilesOptions" type="checkbox" v-model="dataFilesGroup" />
+                                    <q-expansion-item v-model="boolGetDataFilesExpansion" dense dense-toggle
+                                        expand-separator label="Select File">
+                                        <q-option-group :options="dataFilesOptions" type="checkbox"
+                                            v-model="dataFilesGroup" />
                                     </q-expansion-item>
                                 </div>
                             </div>
@@ -42,7 +56,8 @@
                                     </q-item>
                                 </q-list>
                                 <div v-if="dataFilesGroup.length > 0">
-                                    <q-btn :loading="boolLoadingDataFiles" outline color="dark" label="Load" no-caps @click="loadDataFilesInClickhouse">
+                                    <q-btn :loading="boolLoadingDataFiles" outline color="dark" label="Load" no-caps
+                                        @click="loadDataFilesInClickhouse">
                                         <q-tooltip anchor="bottom middle" self="top middle">
                                             Import file data into ClickHouse.
                                         </q-tooltip>
@@ -74,7 +89,8 @@
                                 <div class="text-h6">pepxml Data</div>
                                 <q-separator />
                                 <q-list dense bordered separator>
-                                    <q-item v-for="x in pepxmlTableNames" :key="x" v-ripple clickable @click="fnClickDataItem(x, 'pepxml')">
+                                    <q-item v-for="x in pepxmlTableNames" :key="x" v-ripple clickable
+                                        @click="fnClickDataItem(x, 'pepxml')">
                                         <q-item-section>{{ x }}</q-item-section>
                                     </q-item>
                                 </q-list>
@@ -100,7 +116,8 @@
                                 <div class="text-h6">mzML Data</div>
                                 <q-separator />
                                 <q-list dense bordered separator>
-                                    <q-item v-for="x in mzMLTableNames" :key="x" v-ripple clickable @click="fnClickDataItem(x, 'mzml')">
+                                    <q-item v-for="x in mzMLTableNames" :key="x" v-ripple clickable
+                                        @click="fnClickDataItem(x, 'mzml')">
                                         <q-item-section>{{ x }}</q-item-section>
                                     </q-item>
                                 </q-list>
@@ -141,6 +158,8 @@ const PepxmlPreviewProperty = ref(null);
 const MzmlPreviewProperty = ref(null);
 let mzmlName = ref("");
 let pepxmlName = ref("");
+let showHistoryFileDir = ref(false);
+let historyFileDirs = ref([]);
 
 // let boolOppositeGetDataFiles = ref(!boolGetDataFiles.value);
 
@@ -327,4 +346,28 @@ function fnClickDataItem(name, type) {
         MzmlPreviewProperty.value.boolMzmlModel = true;
     }
 }
+
+function selectHistoryItem(item) {
+    fileDir.value = item;
+    showHistoryFileDir.value = false;
+}
+
+function getHistoryDirs() {
+    fetch("/api/get_history_dirs")
+        .then((response) => response.json())
+        .then((data) => {
+            historyFileDirs.value = data;
+        })
+        .catch((error) => console.error("Error: ", error));
+}
+
+function fnShowHistory() {
+    if (fileDir.value === "") {
+        getHistoryDirs();
+        if (historyFileDirs.value.length !== 0) {
+            showHistoryFileDir.value = true;
+        }
+    }
+}
+
 </script>
