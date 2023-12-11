@@ -21,7 +21,19 @@
           <q-card-section>
             <div class="row">
               <div class="col-6">
-                <q-input v-model="fileDir" label="File Directory" placeholder="Please enter the dir" :dense="true" />
+                <q-input v-model="fileDir" label="File Directory" placeholder="Please enter the dir" :dense="true"
+                  @focus="fnShowHistory">
+                  <q-menu v-model="showHistoryFileDir" fit :offset="[0, 20]">
+                    <q-list>
+                      <q-item v-for="(item, index) in historyFileDirs" :key="index" clickable v-close-popup
+                        @click="selectHistoryItem(item)">
+                        <q-item-section>
+                          {{ item }}
+                        </q-item-section>
+                      </q-item>
+                    </q-list>
+                  </q-menu>
+                </q-input>
               </div>
               <div class="col-6">
                 <q-btn outline color="dark" label="Select" no-caps @click="selectDir" />
